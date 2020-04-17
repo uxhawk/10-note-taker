@@ -4,8 +4,8 @@ const fs = require("fs");
 const rawData = fs.readFileSync("db/db.json");
 var notesArr = JSON.parse(rawData);
 
-// const util = require("util");
-// const writeFileAsync = util.promisify(fs.writeFile);
+const util = require("util");
+const writeFileAsync = util.promisify(fs.writeFile);
 
 function isEmpty(obj) {
     return Object.keys(obj).length === 0;
@@ -31,12 +31,9 @@ module.exports = function(app) {
 
         var notesData = JSON.stringify(notesArr, null, 4);
 
-        fs.writeFile("db/db.json", notesData, function(err) {
-            if (err) {
-                return console.log(err);
-            }
-            console.log("Note added to file");
-        });
+        await addToSavedNotes(notesData);
+
+        res.json(req.body);
     });
 }
 
@@ -44,4 +41,8 @@ function setNoteID() {
     notesArr.forEach((el, index) => {
         el.id = index + 1
     });
+}
+
+async function addToSavedNotes(content) {
+    writeFileAsync("db/db.json", content);
 }
