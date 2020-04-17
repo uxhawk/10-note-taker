@@ -22,7 +22,7 @@ module.exports = function(app) {
         return res.json(notes[id]);
     });
 
-    app.post("/api/notes", async function(req, res) {
+    app.post("/api/notes", function(req, res) {
         if (isEmpty(notes)) {
             notesArr = [];
         }
@@ -31,7 +31,7 @@ module.exports = function(app) {
 
         var notesData = JSON.stringify(notesArr, null, 4);
 
-        await addToSavedNotes(notesData);
+        addToSavedNotes(notesData);
 
         res.json(req.body);
     });
@@ -44,5 +44,9 @@ function setNoteID() {
 }
 
 async function addToSavedNotes(content) {
-    writeFileAsync("db/db.json", content);
+    try {
+        await writeFileAsync("db/db.json", content);
+    } catch (err) {
+        console.log(err);
+    }
 }
