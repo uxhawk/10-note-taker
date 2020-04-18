@@ -1,5 +1,4 @@
-const notes = require("../db/db.json");
-// const path = require("path");
+var notes = require("../db/db.json");
 const fs = require("fs");
 const rawData = fs.readFileSync("db/db.json");
 var notesArr = JSON.parse(rawData);
@@ -25,12 +24,12 @@ module.exports = function(app) {
 
     app.post("/api/notes", async function(req, res) {
         if (isEmpty(notes)) {
-            notesArr = [];
+            notes = [];
         }
         notes.push(req.body);
         setNoteID();
 
-        var notesData = JSON.stringify(notesArr, null, 4);
+        var notesData = JSON.stringify(notes, null, 4);
 
         await addToSavedNotes(notesData);
 
@@ -39,7 +38,7 @@ module.exports = function(app) {
 }
 
 function setNoteID() {
-    notesArr.forEach((el, index) => {
+    notes.forEach((el, index) => {
         el.id = index + 1
     });
 }
