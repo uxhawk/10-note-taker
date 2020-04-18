@@ -10,5 +10,9 @@ module.exports = function(app) {
         res.sendFile(path.join(__dirname, "../public/notes.html"));
     });
 
-    //404 page needs to go here
+    // If no matching route is found default to home
+    // app.get("/*", function(req, res) {
+    //     res.sendFile(path.join(__dirname, "../public/index.html"));
+    // });
+
 }
