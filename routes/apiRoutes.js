@@ -18,7 +18,7 @@ module.exports = function(app) {
     });
 
     app.get("/api/notes/:id", function(req, res) {
-        var id = req.params.id;
+        let id = req.params.id;
         return res.json(notes[id - 1]);
     });
 
@@ -33,9 +33,20 @@ module.exports = function(app) {
         setNoteID();
 
         //stringify notes array, then write it to the db.json file
-        var notesData = JSON.stringify(notes, null, 4);
-        await addToSavedNotes(notesData);
+        let notesData = JSON.stringify(notes, null, 4);
+        await setSavedNotes(notesData);
 
+        res.json(req.body);
+    });
+
+    app.delete("api/notes/:id", async function(req, res) {
+        let id = req.params.id;
+
+        deleteNote(id);
+        setNoteID();
+
+        let notesData = JSON.stringify(notes, null, 4);
+        await setSavedNotes(notesData);
         res.json(req.body);
     });
 }
@@ -46,10 +57,19 @@ function setNoteID() {
     });
 }
 
-function addToSavedNotes(content) {
+function setSavedNotes(content) {
     try {
         return writeFileAsync("db/db.json", content);
     } catch (err) {
         console.log(err);
     }
+}
+
+function deleteNote(noteID) {
+    // console.log(notes);
+    notes.forEach((el, index) => {
+        if (el.id === noteID) {
+            notes.splice(index, 1);
+        }
+    });
 }
