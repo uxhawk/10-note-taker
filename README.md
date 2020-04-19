@@ -2,6 +2,8 @@
 
 This application can be used to write, save, and delete notes. It uses an [express](https://expressjs.com/) backend and save and retrieve note data from a JSON file.
 
+Check it out on heroku: [https://fierce-lowlands-78415.herokuapp.com/](https://fierce-lowlands-78415.herokuapp.com/)
+
 ## Table of Contents
 * [Installation](#installation)
 * [Usage](#usage)
